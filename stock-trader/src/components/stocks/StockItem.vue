@@ -14,16 +14,16 @@
             type="number"
             class="form-control"
             placeholder="Quantity"
-            @change="ddddd"
+            :class="{danger: insufficientFunds}"
           >
         </div>
         <div class="pull-right">
           <button
             class="btn btn-success"
-            :disabled="quantity <= 0 || !Number.isInteger(quantity)"
+            :disabled="insufficientFunds || quantity <= 0 || !Number.isInteger(quantity)"
             @click="buyStocks"
           >
-            Buy
+            {{ insufficientFunds ? 'Not enought $' : 'Buy' }}
           </button>
         </div>
       </div>
@@ -45,6 +45,14 @@ export default {
       quantity: null,
     }
   },
+  computed: {
+    funds() {
+      return this.$store.getters.funds
+    },
+    insufficientFunds() {
+      return this.quantity * this.stock.price > this.funds
+    }
+  },
   methods: {
     buyStocks() {
       const order = {
@@ -52,16 +60,15 @@ export default {
         stockPrice: this.stock.price,
         quantity: this.quantity
       }
-      console.log(order)
-      this.quantity = 0
+      this.$store.dispatch('buyStock', order)
+      this.quantity = null
     },
-    ddddd() {
-      console.log(typeof this.quantity)
-    }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+.danger {
+  border: 1px solid red;
+}
 </style>

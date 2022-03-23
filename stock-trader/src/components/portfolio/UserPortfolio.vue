@@ -1,10 +1,24 @@
 <template>
-  <h1>Porfolio page</h1>
+  <div class="row">
+    <user-stock
+      v-for="stock in stocksPortfolio"
+      :key="stock.id"
+      :stock="stock"
+    />
+  </div>
+
 </template>
 
 <script>
-export default {
+import UserStock from './UserStock.vue'
 
+export default {
+  components: { UserStock },
+  computed: {
+    stocksPortfolio() {
+      return this.$store.getters.stockPortfolio
+    }
+  },
 }
 </script>
 

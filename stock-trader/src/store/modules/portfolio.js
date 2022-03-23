@@ -6,7 +6,7 @@ const state = {
 const getters = {
   stockPortfolio(state, getters) {
     return state.stocks.map((stock) => {
-      const record = getters.stocks.find(el => el.id === stock.id)
+      const record = getters.stocks.find(el => el.id == stock.id)
       return {
         id: stock.id,
         quantity: stock.quantity,
@@ -22,7 +22,7 @@ const getters = {
 
 const mutations = {
   'BUY_STOCK' (state, { stockId, quantity, stockPrice}) {
-    const record = state.stocks.find((stock) => stock.id === stockId)
+    const record = state.stocks.find((stock) => stock.id == stockId)
     if (record) {
       record.quantity += quantity
     } else {
@@ -34,7 +34,7 @@ const mutations = {
     state.funds -= stockPrice * quantity
   },
   'SELL_STOCKS' (state, { stockId, quantity, stockPrice }) {
-    const record = state.stocks.find((stock) => stock.id === stockId)
+    const record = state.stocks.find((stock) => stock.id == stockId)
     if(record.quantity > quantity) {
       record.quantity -= quantity
     } else {
